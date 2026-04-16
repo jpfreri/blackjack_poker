@@ -144,7 +144,7 @@ class PokerGame {
     p.currentBet += actual;
     pot += actual;
     if (p.chips == 0) p.isAllIn = true;
-    p.lastActionLabel = actual == smallBlind ? 'SB $actual' : 'BB $actual';
+    p.lastActionLabel = actual == smallBlind ? 'SB|$actual' : 'BB|$actual';
   }
 
   void _skipNonActing() {
@@ -163,14 +163,14 @@ class PokerGame {
     switch (action) {
       case PlayerAction.fold:
         player.folded = true;
-        player.lastActionLabel = 'Fold';
-        _log('${player.name} folds');
+        player.lastActionLabel = 'FOLD';
+        _log('FOLD|${player.name}');
         break;
 
       case PlayerAction.check:
         if (!canCheck) return;
-        player.lastActionLabel = 'Check';
-        _log('${player.name} checks');
+        player.lastActionLabel = 'CHECK';
+        _log('CHECK|${player.name}');
         break;
 
       case PlayerAction.call:
@@ -179,8 +179,8 @@ class PokerGame {
         player.currentBet += amount;
         pot += amount;
         if (player.chips == 0) player.isAllIn = true;
-        player.lastActionLabel = 'Call $amount';
-        _log('${player.name} calls $amount');
+        player.lastActionLabel = 'CALL|$amount';
+        _log('CALL|${player.name}|$amount');
         break;
 
       case PlayerAction.raise:
@@ -192,8 +192,8 @@ class PokerGame {
         currentBet = player.currentBet;
         _actionsSinceLastRaise = 0;
         if (player.chips == 0) player.isAllIn = true;
-        player.lastActionLabel = 'Raise ${player.currentBet}';
-        _log('${player.name} raises to ${player.currentBet}');
+        player.lastActionLabel = 'RAISE|${player.currentBet}';
+        _log('RAISE|${player.name}|${player.currentBet}');
         break;
 
       case PlayerAction.allIn:
@@ -206,8 +206,8 @@ class PokerGame {
           _actionsSinceLastRaise = 0;
         }
         player.isAllIn = true;
-        player.lastActionLabel = 'All-in';
-        _log('${player.name} all-in for ${player.currentBet}');
+        player.lastActionLabel = 'ALLIN|${player.currentBet}';
+        _log('ALLIN|${player.name}|${player.currentBet}');
         break;
     }
 
@@ -290,7 +290,7 @@ class PokerGame {
     final active = activePlayers;
     if (active.length == 1) {
       active[0].chips += pot;
-      _log('${active[0].name} wins \$$pot');
+      _log('WINS|${active[0].name}|$pot');
       return;
     }
 
@@ -319,9 +319,9 @@ class PokerGame {
     }
 
     if (winners.length == 1) {
-      _log('${winners[0].name} wins \$$pot with ${winners[0].handResult?.rankName ?? 'best hand'}');
+      _log('WINS_HAND|${winners[0].name}|$pot|${winners[0].handResult?.rank.name ?? 'highCard'}');
     } else {
-      _log('Split pot \$$pot: ${winners.map((w) => w.name).join(' & ')}');
+      _log('SPLIT|$pot|${winners.map((w) => w.name).join(',')}');
     }
   }
 

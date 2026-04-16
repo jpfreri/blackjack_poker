@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../l10n/app_strings.dart';
+﻿import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../models/blackjack_game.dart';
 import '../models/card_model.dart';
 import '../widgets/card_widget.dart';
@@ -35,6 +35,9 @@ class _BlackjackScreenState extends State<BlackjackScreen>
     Color(0xFF111827),
     Color(0xFF7C3AED),
   ];
+
+  // ── Localization ──────────────────────────────────────────────────────────
+  late AppLocalizations _l;
 
   // ── Life-cycle ────────────────────────────────────────────────────────────
   @override
@@ -215,11 +218,10 @@ class _BlackjackScreenState extends State<BlackjackScreen>
     }
   }
 
-  AppStrings get _l => AppStrings(localeNotifier.value);
-
   // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    _l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: const Color(0xFF1a472a),
       appBar: AppBar(
@@ -344,7 +346,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFFD700).withOpacity(glow),
+                color: const Color(0xFFFFD700).withValues(alpha: glow),
                 blurRadius: 24,
                 spreadRadius: 6,
               ),
@@ -471,12 +473,12 @@ class _BlackjackScreenState extends State<BlackjackScreen>
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: border, width: (isSelected || isActive) ? 2 : 1),
           color: isActive
-              ? Colors.greenAccent.withOpacity(0.08)
+              ? Colors.greenAccent.withValues(alpha: 0.08)
               : isSelected
-                  ? const Color(0xFFFFD700).withOpacity(0.06)
-                  : Colors.black.withOpacity(0.2),
+                  ? const Color(0xFFFFD700).withValues(alpha: 0.06)
+                  : Colors.black.withValues(alpha: 0.2),
           boxShadow: isActive
-              ? [BoxShadow(color: Colors.greenAccent.withOpacity(0.3), blurRadius: 10)]
+              ? [BoxShadow(color: Colors.greenAccent.withValues(alpha: 0.3), blurRadius: 10)]
               : null,
         ),
         padding: const EdgeInsets.all(5),
@@ -521,7 +523,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: slot.isBust
-                      ? Colors.red.withOpacity(0.5)
+                      ? Colors.red.withValues(alpha: 0.5)
                       : Colors.black45,
                   borderRadius: BorderRadius.circular(4),
                 ),
@@ -541,7 +543,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
-                  color: _resultColor(slot.result).withOpacity(0.2),
+                  color: _resultColor(slot.result).withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: _resultColor(slot.result), width: 1),
                 ),
@@ -644,7 +646,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: onTap != null ? color.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+          color: onTap != null ? color.withValues(alpha: 0.2) : Colors.grey.withValues(alpha: 0.1),
           border: Border.all(
             color: onTap != null ? color : Colors.grey,
             width: 1.5,
@@ -710,19 +712,19 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: Colors.white.withOpacity(0.55),
+                                  color: Colors.white.withValues(alpha: 0.55),
                                   blurRadius: 10,
                                   spreadRadius: 2,
                                 ),
                                 BoxShadow(
-                                  color: _chipColors[i].withOpacity(0.6),
+                                  color: _chipColors[i].withValues(alpha: 0.6),
                                   blurRadius: 6,
                                 ),
                               ]
                             : canAfford
                                 ? [
                                     BoxShadow(
-                                      color: _chipColors[i].withOpacity(0.4),
+                                      color: _chipColors[i].withValues(alpha: 0.4),
                                       blurRadius: 4,
                                     ),
                                   ]
@@ -779,7 +781,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
               Expanded(
                 flex: 2,
                 child: _bottomBtn(
-                  '${_l.allIn}\n\$${_game.playerChips - (_game.totalBets - _game.slots[_selectedSlot].bet)}',
+                  '${_l.maxBet}\n\$${_game.playerChips - (_game.totalBets - _game.slots[_selectedSlot].bet)}',
                   const Color(0xFFFFD700),
                   (_game.playerChips -
                               (_game.totalBets -
@@ -843,7 +845,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
           border: Border.all(
             color: onTap != null ? color : Colors.white12,
           ),
-          color: onTap != null ? color.withOpacity(0.15) : Colors.white.withOpacity(0.03),
+          color: onTap != null ? color.withValues(alpha: 0.15) : Colors.white.withValues(alpha: 0.03),
         ),
         child: Center(
           child: Text(
@@ -874,7 +876,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: const Color(0xFF4ade80).withOpacity(0.2),
+            color: const Color(0xFF4ade80).withValues(alpha: 0.2),
             border: Border.all(color: const Color(0xFF4ade80), width: 1.5),
           ),
           child: Center(
@@ -899,7 +901,7 @@ class _DeckPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
-      ..color = Colors.white.withOpacity(0.08)
+      ..color = Colors.white.withValues(alpha: 0.08)
       ..strokeWidth = 1;
     const step = 10.0;
     for (double x = 0; x < size.width; x += step) {
@@ -910,7 +912,7 @@ class _DeckPatternPainter extends CustomPainter {
     }
     // Inner frame
     final framePaint = Paint()
-      ..color = Colors.white.withOpacity(0.18)
+      ..color = Colors.white.withValues(alpha: 0.18)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
     final inset = size.width * 0.12;

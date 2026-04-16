@@ -1,0 +1,100 @@
+{
+  "@@locale": "en",
+  "languageLabel": "Language",
+  "bjSubtitle": "5 Betting Slots  ·  Beat the Dealer",
+  "pokerSubtitle": "Up to 4 AI Opponents  ·  4 Difficulties",
+  "dealer": "DEALER",
+  "dealing": "Dealing...",
+  "hit": "HIT",
+  "stand": "STAND",
+  "doubleDown": "DOUBLE",
+  "deal": "DEAL",
+  "clear": "CLEAR",
+  "clearAll": "CLEAR ALL",
+  "allIn": "ALL IN",
+  "betBtn": "BET",
+  "nextRound": "NEXT ROUND",
+  "win": "WIN",
+  "lose": "LOSE",
+  "push": "PUSH",
+  "bust": "BUST!",
+  "bustMsg": "You're out of chips.\nLeave the table and come back to play again.",
+  "leaveTable": "LEAVE TABLE",
+  "slotInfo": "Slot {slot}  •  Bet: ${bet}  •  Chips: ${chips}",
+  "@slotInfo": {
+    "placeholders": {
+      "slot": {"type": "int"},
+      "bet": {"type": "int"},
+      "chips": {"type": "int"}
+    }
+  },
+  "preflop": "PRE-FLOP",
+  "flop": "FLOP",
+  "turn": "TURN",
+  "river": "RIVER",
+  "showdown": "SHOWDOWN",
+  "fold": "FOLD",
+  "checkAction": "CHECK",
+  "callBtn": "CALL",
+  "maxBet": "MAX BET",
+  "twoBB": "2× BB",
+  "raiseBtn": "RAISE",
+  "raiseLabel": "RAISE",
+  "thinking": "Thinking...",
+  "waiting": "Waiting...",
+  "nextHand": "NEXT HAND",
+  "bustLeave": "BUST — LEAVE TABLE",
+  "youWin": "YOU WIN! — NEW GAME",
+  "opponents": "NUMBER OF OPPONENTS",
+  "aiDifficulty": "AI DIFFICULTY",
+  "startGame": "START GAME",
+  "botSingular": "bot",
+  "botPlural": "bots",
+  "easyLabel": "EASY",
+  "mediumLabel": "MEDIUM",
+  "hardLabel": "HARD",
+  "masterLabel": "MASTER",
+  "easyDesc": "Beginner bots — they barely know the rules.",
+  "mediumDesc": "Solid players with decent strategy.",
+  "hardDesc": "Card-counters winning ~60-70% of the time.",
+  "masterDesc": "They see your cards. Good luck.",
+  "potLabel": "POT",
+  "betLabel": "BET",
+  "actionFold": "Folded",
+  "actionCheck": "Checked",
+  "actionCall": "Called",
+  "actionRaise": "Raised",
+  "actionAllIn": "All In",
+  "handHighCard": "High Card",
+  "handOnePair": "One Pair",
+  "handTwoPair": "Two Pair",
+  "handThreeOfAKind": "Three of a Kind",
+  "handStraight": "Straight",
+  "handFlush": "Flush",
+  "handFullHouse": "Full House",
+  "handFourOfAKind": "Four of a Kind",
+  "handStraightFlush": "Straight Flush",
+  "handRoyalFlush": "Royal Flush",
+  "logWins": "{name} wins ${amount}",
+  "@logWins": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"}
+    }
+  },
+  "logWinsWith": "{name} wins ${amount} with {handName}",
+  "@logWinsWith": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"},
+      "handName": {"type": "String"}
+    }
+  },
+  "logSplit": "Split ${amount} between {names}",
+  "@logSplit": {
+    "placeholders": {
+      "amount": {"type": "int"},
+      "names": {"type": "String"}
+    }
+  }
+}

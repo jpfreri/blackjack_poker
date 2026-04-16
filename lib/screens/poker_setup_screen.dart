@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../l10n/app_strings.dart';
+﻿import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../models/poker_game.dart';
 import 'poker_screen.dart';
 
@@ -21,41 +21,45 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
     AIDifficulty.master: Color(0xFFf43f5e),
   };
 
-  Map<AIDifficulty, ({String label, String desc, Color color})>
-      _difficultyInfo(AppStrings s) => {
-            AIDifficulty.easy: (
-              label: s.easyLabel,
-              desc: s.easyDesc,
-              color: _difficultyColors[AIDifficulty.easy]!,
-            ),
-            AIDifficulty.medium: (
-              label: s.mediumLabel,
-              desc: s.mediumDesc,
-              color: _difficultyColors[AIDifficulty.medium]!,
-            ),
-            AIDifficulty.hard: (
-              label: s.hardLabel,
-              desc: s.hardDesc,
-              color: _difficultyColors[AIDifficulty.hard]!,
-            ),
-            AIDifficulty.master: (
-              label: s.masterLabel,
-              desc: s.masterDesc,
-              color: _difficultyColors[AIDifficulty.master]!,
-            ),
-          };
-
   @override
   Widget build(BuildContext context) {
-    final s = AppStrings(localeNotifier.value);
-    final diffInfo = _difficultyInfo(s);
+    final l = AppLocalizations.of(context);
+
+    final difficultyInfo =
+        <AIDifficulty, ({String label, String desc, Color color})>{
+      AIDifficulty.easy: (
+        label: l.easyLabel,
+        desc: l.easyDesc,
+        color: _difficultyColors[AIDifficulty.easy]!,
+      ),
+      AIDifficulty.medium: (
+        label: l.mediumLabel,
+        desc: l.mediumDesc,
+        color: _difficultyColors[AIDifficulty.medium]!,
+      ),
+      AIDifficulty.hard: (
+        label: l.hardLabel,
+        desc: l.hardDesc,
+        color: _difficultyColors[AIDifficulty.hard]!,
+      ),
+      AIDifficulty.master: (
+        label: l.masterLabel,
+        desc: l.masterDesc,
+        color: _difficultyColors[AIDifficulty.master]!,
+      ),
+    };
+
     return Scaffold(
       backgroundColor: const Color(0xFF0d2015),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0d2015),
         title: const Text(
           "TEXAS HOLD'EM", // game name — not translated
-          style: TextStyle(color: Color(0xFF4ade80), letterSpacing: 2, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color(0xFF4ade80),
+            letterSpacing: 2,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Color(0xFF4ade80)),
@@ -67,8 +71,12 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                s.opponents,
-                style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2),
+                l.opponents,
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 11,
+                  letterSpacing: 2,
+                ),
               ),
               const SizedBox(height: 12),
               Row(
@@ -85,7 +93,9 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: selected ? const Color(0xFF4ade80) : Colors.white24,
+                            color: selected
+                                ? const Color(0xFF4ade80)
+                                : Colors.white24,
                             width: selected ? 2 : 1,
                           ),
                           color: selected
@@ -99,14 +109,18 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color: selected ? const Color(0xFF4ade80) : Colors.white54,
+                                color: selected
+                                    ? const Color(0xFF4ade80)
+                                    : Colors.white54,
                               ),
                             ),
                             Text(
-                              s.botCount(n),
+                              n == 1 ? l.botSingular : l.botPlural,
                               style: TextStyle(
                                 fontSize: 10,
-                                color: selected ? const Color(0xFF4ade80) : Colors.white38,
+                                color: selected
+                                    ? const Color(0xFF4ade80)
+                                    : Colors.white38,
                               ),
                             ),
                           ],
@@ -118,26 +132,35 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
               ),
               const SizedBox(height: 32),
               Text(
-                s.aiDifficulty,
-                style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 2),
+                l.aiDifficulty,
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 11,
+                  letterSpacing: 2,
+                ),
               ),
               const SizedBox(height: 12),
               ...AIDifficulty.values.map((d) {
-                final info = diffInfo[d]!;
+                final info = difficultyInfo[d]!;
                 final selected = _difficulty == d;
                 return GestureDetector(
                   onTap: () => setState(() => _difficulty = d),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
                     margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: selected ? info.color : Colors.white24,
                         width: selected ? 2 : 1,
                       ),
-                      color: selected ? info.color.withValues(alpha: 0.12) : Colors.white.withValues(alpha: 0.03),
+                      color: selected
+                          ? info.color.withValues(alpha: 0.12)
+                          : Colors.white.withValues(alpha: 0.03),
                     ),
                     child: Row(
                       children: [
@@ -209,7 +232,7 @@ class _PokerSetupScreenState extends State<PokerSetupScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      s.startGame,
+                      l.startGame,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
