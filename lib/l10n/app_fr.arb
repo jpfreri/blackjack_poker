@@ -1,0 +1,100 @@
+{
+  "@@locale": "fr",
+  "languageLabel": "Langue",
+  "bjSubtitle": "5 Mises  ·  Battez le Croupier",
+  "pokerSubtitle": "Jusqu'à 4 Adversaires  ·  4 Niveaux",
+  "dealer": "CROUPIER",
+  "dealing": "Distribution...",
+  "hit": "TIRER",
+  "stand": "RESTER",
+  "doubleDown": "DOUBLER",
+  "deal": "DISTRIBUER",
+  "clear": "EFFACER",
+  "clearAll": "TOUT EFFACER",
+  "allIn": "TAPIS",
+  "betBtn": "MISER",
+  "nextRound": "TOUR SUIVANT",
+  "win": "GAGNÉ",
+  "lose": "PERDU",
+  "push": "ÉGALITÉ",
+  "bust": "RUINÉ !",
+  "bustMsg": "Vous n'avez plus de jetons.\nQuittez la table et revenez jouer.",
+  "leaveTable": "QUITTER LA TABLE",
+  "slotInfo": "Slot {slot}  •  Mise: ${bet}  •  Jetons: ${chips}",
+  "@slotInfo": {
+    "placeholders": {
+      "slot": {"type": "int"},
+      "bet": {"type": "int"},
+      "chips": {"type": "int"}
+    }
+  },
+  "preflop": "PRÉ-FLOP",
+  "flop": "FLOP",
+  "turn": "TOURNANT",
+  "river": "RIVIÈRE",
+  "showdown": "ABATTAGE",
+  "fold": "SE COUCHER",
+  "checkAction": "CHECKER",
+  "callBtn": "SUIVRE",
+  "maxBet": "MISE MAX",
+  "twoBB": "2× BB",
+  "raiseBtn": "RELANCER",
+  "raiseLabel": "RELANCER",
+  "thinking": "Réflexion...",
+  "waiting": "En attente...",
+  "nextHand": "MAIN SUIVANTE",
+  "bustLeave": "RUINÉ — QUITTER",
+  "youWin": "VOUS GAGNEZ ! — NOUVEAU JEU",
+  "opponents": "NOMBRE D'ADVERSAIRES",
+  "aiDifficulty": "DIFFICULTÉ DE L'IA",
+  "startGame": "COMMENCER",
+  "botSingular": "bot",
+  "botPlural": "bots",
+  "easyLabel": "FACILE",
+  "mediumLabel": "MOYEN",
+  "hardLabel": "DIFFICILE",
+  "masterLabel": "MAÎTRE",
+  "easyDesc": "Bots débutants — ils connaissent à peine les règles.",
+  "mediumDesc": "Joueurs solides avec une bonne stratégie.",
+  "hardDesc": "Compteurs de cartes, ~60-70% de victoires.",
+  "masterDesc": "Ils voient vos cartes. Bonne chance.",
+  "potLabel": "POT",
+  "betLabel": "MISE",
+  "actionFold": "Couché",
+  "actionCheck": "Checké",
+  "actionCall": "Suivi",
+  "actionRaise": "Relancé",
+  "actionAllIn": "Tapis",
+  "handHighCard": "Carte Haute",
+  "handOnePair": "Une Paire",
+  "handTwoPair": "Deux Paires",
+  "handThreeOfAKind": "Brelan",
+  "handStraight": "Suite",
+  "handFlush": "Couleur",
+  "handFullHouse": "Full",
+  "handFourOfAKind": "Carré",
+  "handStraightFlush": "Quinte Flush",
+  "handRoyalFlush": "Quinte Flush Royale",
+  "logWins": "{name} gagne ${amount}",
+  "@logWins": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"}
+    }
+  },
+  "logWinsWith": "{name} gagne ${amount} avec {handName}",
+  "@logWinsWith": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"},
+      "handName": {"type": "String"}
+    }
+  },
+  "logSplit": "Partage de ${amount} entre {names}",
+  "@logSplit": {
+    "placeholders": {
+      "amount": {"type": "int"},
+      "names": {"type": "String"}
+    }
+  }
+}

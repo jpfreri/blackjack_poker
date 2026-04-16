@@ -78,7 +78,7 @@ class HandEvaluator {
     final isStraight = _checkStraight(vals);
 
     final counts = <int, int>{};
-    for (final v in vals) counts[v] = (counts[v] ?? 0) + 1;
+    for (final v in vals) { counts[v] = (counts[v] ?? 0) + 1; }
     final groups = counts.entries.toList()
       ..sort((a, b) {
         final cmp = b.value.compareTo(a.value);

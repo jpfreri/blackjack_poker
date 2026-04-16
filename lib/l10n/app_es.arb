@@ -1,0 +1,100 @@
+{
+  "@@locale": "es",
+  "languageLabel": "Idioma",
+  "bjSubtitle": "5 Apuestas  ·  Supera al Dealer",
+  "pokerSubtitle": "Hasta 4 Oponentes IA  ·  4 Dificultades",
+  "dealer": "CROUPIER",
+  "dealing": "Repartiendo...",
+  "hit": "PEDIR",
+  "stand": "PLANTARSE",
+  "doubleDown": "DOBLAR",
+  "deal": "REPARTIR",
+  "clear": "LIMPIAR",
+  "clearAll": "LIMPIAR TODO",
+  "allIn": "ALL IN",
+  "betBtn": "APOSTAR",
+  "nextRound": "SIGUIENTE RONDA",
+  "win": "GANÓ",
+  "lose": "PERDIÓ",
+  "push": "EMPATE",
+  "bust": "¡SIN FICHAS!",
+  "bustMsg": "Te quedaste sin fichas.\nSal de la mesa y vuelve para jugar de nuevo.",
+  "leaveTable": "SALIR DE LA MESA",
+  "slotInfo": "Slot {slot}  •  Apuesta: ${bet}  •  Fichas: ${chips}",
+  "@slotInfo": {
+    "placeholders": {
+      "slot": {"type": "int"},
+      "bet": {"type": "int"},
+      "chips": {"type": "int"}
+    }
+  },
+  "preflop": "PRE-FLOP",
+  "flop": "FLOP",
+  "turn": "TURN",
+  "river": "RIVER",
+  "showdown": "ENFRENTAMIENTO",
+  "fold": "RETIRARSE",
+  "checkAction": "PASAR",
+  "callBtn": "IGUALAR",
+  "maxBet": "APUESTA MÁX",
+  "twoBB": "2× BB",
+  "raiseBtn": "SUBIR",
+  "raiseLabel": "SUBIR",
+  "thinking": "Pensando...",
+  "waiting": "Esperando...",
+  "nextHand": "SIGUIENTE MANO",
+  "bustLeave": "SIN FICHAS — SALIR",
+  "youWin": "¡GANASTE! — NUEVO JUEGO",
+  "opponents": "NÚMERO DE OPONENTES",
+  "aiDifficulty": "DIFICULTAD DE LA IA",
+  "startGame": "INICIAR JUEGO",
+  "botSingular": "bot",
+  "botPlural": "bots",
+  "easyLabel": "FÁCIL",
+  "mediumLabel": "MEDIO",
+  "hardLabel": "DIFÍCIL",
+  "masterLabel": "MAESTRO",
+  "easyDesc": "Bots principiantes — apenas conocen las reglas.",
+  "mediumDesc": "Jugadores sólidos con buena estrategia.",
+  "hardDesc": "Contadores de cartas, ~60-70% de victorias.",
+  "masterDesc": "Ven tus cartas. Buena suerte.",
+  "potLabel": "BOTE",
+  "betLabel": "APUESTA",
+  "actionFold": "Se retiró",
+  "actionCheck": "Pasó",
+  "actionCall": "Igualó",
+  "actionRaise": "Subió",
+  "actionAllIn": "All In",
+  "handHighCard": "Carta Alta",
+  "handOnePair": "Un Par",
+  "handTwoPair": "Dos Pares",
+  "handThreeOfAKind": "Trío",
+  "handStraight": "Escalera",
+  "handFlush": "Color",
+  "handFullHouse": "Full House",
+  "handFourOfAKind": "Póker",
+  "handStraightFlush": "Escalera de Color",
+  "handRoyalFlush": "Escalera Real",
+  "logWins": "{name} gana ${amount}",
+  "@logWins": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"}
+    }
+  },
+  "logWinsWith": "{name} gana ${amount} con {handName}",
+  "@logWinsWith": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "amount": {"type": "int"},
+      "handName": {"type": "String"}
+    }
+  },
+  "logSplit": "División de ${amount} entre {names}",
+  "@logSplit": {
+    "placeholders": {
+      "amount": {"type": "int"},
+      "names": {"type": "String"}
+    }
+  }
+}
