@@ -527,6 +527,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Split \${amount} between {names}'**
   String logSplit(int amount, String names);
+
+  /// No description provided for @split.
+  ///
+  /// In en, this message translates to:
+  /// **'SPLIT'**
+  String get split;
+
+  /// No description provided for @insuranceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'INSURANCE?'**
+  String get insuranceTitle;
+
+  /// No description provided for @takeInsuranceBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'TAKE INSURANCE'**
+  String get takeInsuranceBtn;
+
+  /// No description provided for @declineBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'DECLINE'**
+  String get declineBtn;
+
+  /// No description provided for @mainHandLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MAIN'**
+  String get mainHandLabel;
+
+  /// No description provided for @splitHandLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SPLIT'**
+  String get splitHandLabel;
 }
 
 class _AppLocalizationsDelegate

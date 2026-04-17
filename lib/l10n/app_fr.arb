@@ -96,5 +96,11 @@
       "amount": {"type": "int"},
       "names": {"type": "String"}
     }
-  }
+  },
+  "split": "PARTAGER",
+  "insuranceTitle": "ASSURANCE?",
+  "takeInsuranceBtn": "PRENDRE L'ASSURANCE",
+  "declineBtn": "REFUSER",
+  "mainHandLabel": "PRINCIPALE",
+  "splitHandLabel": "SÉPARÉE"
 }

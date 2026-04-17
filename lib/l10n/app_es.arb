@@ -96,5 +96,11 @@
       "amount": {"type": "int"},
       "names": {"type": "String"}
     }
-  }
+  },
+  "split": "DIVIDIR",
+  "insuranceTitle": "¿SEGURO?",
+  "takeInsuranceBtn": "TOMAR SEGURO",
+  "declineBtn": "RECHAZAR",
+  "mainHandLabel": "PRINCIPAL",
+  "splitHandLabel": "DIVISIÓN"
 }

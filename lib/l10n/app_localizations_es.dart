@@ -229,4 +229,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String logSplit(int amount, String names) {
     return 'División de \$$amount entre $names';
   }
+
+  @override
+  String get split => 'DIVIDIR';
+
+  @override
+  String get insuranceTitle => '¿SEGURO?';
+
+  @override
+  String get takeInsuranceBtn => 'TOMAR SEGURO';
+
+  @override
+  String get declineBtn => 'RECHAZAR';
+
+  @override
+  String get mainHandLabel => 'PRINCIPAL';
+
+  @override
+  String get splitHandLabel => 'DIVISIÓN';
 }
