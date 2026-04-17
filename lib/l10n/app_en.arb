@@ -96,5 +96,11 @@
       "amount": {"type": "int"},
       "names": {"type": "String"}
     }
-  }
+  },
+  "split": "SPLIT",
+  "insuranceTitle": "INSURANCE?",
+  "takeInsuranceBtn": "TAKE INSURANCE",
+  "declineBtn": "DECLINE",
+  "mainHandLabel": "MAIN",
+  "splitHandLabel": "SPLIT"
 }

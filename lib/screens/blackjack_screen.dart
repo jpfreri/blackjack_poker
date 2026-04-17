@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/blackjack_game.dart';
 import '../models/card_model.dart';
@@ -108,6 +108,12 @@ class _BlackjackScreenState extends State<BlackjackScreen>
   void _double() {
     setState(() => _game.doubleDown());
   }
+
+  void _split() => setState(() => _game.split());
+
+  void _takeInsurance() => setState(() => _game.takeInsurance());
+
+  void _declineInsurance() => setState(() => _game.declineInsurance());
 
   void _newRound() {
     setState(() {
@@ -455,13 +461,19 @@ class _BlackjackScreenState extends State<BlackjackScreen>
     final slot = _game.slots[i];
     final busy = _game.gameInProgress || _isDealingCards;
     final isSelected = !busy && _selectedSlot == i;
-    final isActive = !_isDealingCards && _game.currentSlotIndex == i;
+    final isActive = !_isDealingCards &&
+        _game.currentSlotIndex == i &&
+        !(_game.currentSlot?.isPlayingSplit ?? false);
+    final isActiveSplit = !_isDealingCards &&
+        _game.currentSlotIndex == i &&
+        (_game.currentSlot?.isPlayingSplit ?? false);
+    final anyActive = isActive || isActiveSplit;
     final hasResult = slot.result != null;
 
     Color border = Colors.white24;
     if (isSelected) border = const Color(0xFFFFD700);
-    if (isActive) border = Colors.greenAccent;
-    if (hasResult) border = _resultColor(slot.result);
+    if (anyActive) border = Colors.greenAccent;
+    if (hasResult && !anyActive) border = _resultColor(slot.result);
 
     return GestureDetector(
       onTap: busy ? null : () => setState(() => _selectedSlot = i),
@@ -471,14 +483,19 @@ class _BlackjackScreenState extends State<BlackjackScreen>
         constraints: const BoxConstraints(minHeight: 108),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: border, width: (isSelected || isActive) ? 2 : 1),
-          color: isActive
+          border: Border.all(
+              color: border, width: (isSelected || anyActive) ? 2 : 1),
+          color: anyActive
               ? Colors.greenAccent.withValues(alpha: 0.08)
               : isSelected
                   ? const Color(0xFFFFD700).withValues(alpha: 0.06)
                   : Colors.black.withValues(alpha: 0.2),
-          boxShadow: isActive
-              ? [BoxShadow(color: Colors.greenAccent.withValues(alpha: 0.3), blurRadius: 10)]
+          boxShadow: anyActive
+              ? [
+                  BoxShadow(
+                      color: Colors.greenAccent.withValues(alpha: 0.3),
+                      blurRadius: 10)
+                ]
               : null,
         ),
         padding: const EdgeInsets.all(5),
@@ -503,24 +520,51 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                 ),
               ),
             const SizedBox(height: 3),
-            // Cards with staggered deal animation
+            // ── Main hand section ──────────────────────────────────────────
+            if (slot.isSplit) ...[
+              // MAIN label
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? Colors.greenAccent.withValues(alpha: 0.25)
+                      : Colors.black26,
+                  borderRadius: BorderRadius.circular(3),
+                  border: isActive
+                      ? Border.all(color: Colors.greenAccent, width: 1)
+                      : null,
+                ),
+                child: Text(
+                  _l.mainHandLabel,
+                  style: TextStyle(
+                    color: isActive ? Colors.greenAccent : Colors.white38,
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 2),
+            ],
+            // Main cards
             ...slot.cards.asMap().entries.map(
               (e) => Padding(
                 padding: const EdgeInsets.only(bottom: 3),
                 child: _animatedCard(
                   e.value,
                   _slotCardVisible(i, e.key),
-                  width: 58,
-                  height: 80,
+                  width: 56,
+                  height: 78,
                   dealOrder: e.key,
                 ),
               ),
             ),
-            // Hand value badge
+            // Main hand value badge
             if (slot.cards.isNotEmpty && _slotCardVisible(i, 0)) ...[
               const SizedBox(height: 3),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: slot.isBust
                       ? Colors.red.withValues(alpha: 0.5)
@@ -537,15 +581,17 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                 ),
               ),
             ],
-            // Result badge
+            // Main result badge
             if (hasResult) ...[
               const SizedBox(height: 3),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
                   color: _resultColor(slot.result).withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: _resultColor(slot.result), width: 1),
+                  border: Border.all(
+                      color: _resultColor(slot.result), width: 1),
                 ),
                 child: Text(
                   _resultText(slot.result),
@@ -557,9 +603,121 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                 ),
               ),
             ],
+            // ── Split hand section ─────────────────────────────────────────
+            if (slot.isSplit) _splitHandSection(slot, i, isActiveSplit),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _splitHandSection(BlackjackSlot slot, int i, bool isActiveSplit) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 4),
+        // Divider between main and split
+        Row(
+          children: [
+            Expanded(
+              child: Container(height: 1, color: Colors.white24),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                '\$${slot.splitBet}',
+                style: const TextStyle(
+                  color: Colors.white38,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(height: 1, color: Colors.white24),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        // SPLIT label
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+          decoration: BoxDecoration(
+            color: isActiveSplit
+                ? Colors.greenAccent.withValues(alpha: 0.25)
+                : Colors.black26,
+            borderRadius: BorderRadius.circular(3),
+            border: isActiveSplit
+                ? Border.all(color: Colors.greenAccent, width: 1)
+                : null,
+          ),
+          child: Text(
+            _l.splitHandLabel,
+            style: TextStyle(
+              color: isActiveSplit ? Colors.greenAccent : Colors.white38,
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
+        // Split cards
+        ...slot.splitCards.asMap().entries.map(
+          (e) => Padding(
+            padding: const EdgeInsets.only(bottom: 3),
+            child: _animatedCard(
+              e.value,
+              true,
+              width: 56,
+              height: 78,
+              dealOrder: e.key + 10,
+            ),
+          ),
+        ),
+        // Split hand value badge
+        if (slot.splitCards.isNotEmpty) ...[
+          const SizedBox(height: 3),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: slot.splitIsBust
+                  ? Colors.red.withValues(alpha: 0.5)
+                  : Colors.black45,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              '${slot.splitHandValue}',
+              style: TextStyle(
+                color: slot.splitIsBust ? Colors.redAccent : Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+        // Split result badge
+        if (slot.splitResult != null) ...[
+          const SizedBox(height: 3),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            decoration: BoxDecoration(
+              color: _resultColor(slot.splitResult).withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                  color: _resultColor(slot.splitResult), width: 1),
+            ),
+            child: Text(
+              _resultText(slot.splitResult),
+              style: TextStyle(
+                color: _resultColor(slot.splitResult),
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -591,6 +749,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
         ),
       );
     }
+    if (_game.awaitingInsuranceDecision) return _insurancePrompt();
     if (_game.gameInProgress && _game.isPlayerTurn) {
       return _playerActionButtons();
     }
@@ -602,11 +761,71 @@ class _BlackjackScreenState extends State<BlackjackScreen>
     return _bettingControls();
   }
 
-  // ── Player action buttons (Hit / Stand / Double) ──────────────────────────
+  // ── Insurance prompt ──────────────────────────────────────────────────────
+  Widget _insurancePrompt() {
+    final amount = _game.insuranceMaxAmount;
+    return Container(
+      color: const Color(0xFF0d2818),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.shield_outlined,
+                  color: Color(0xFFFFD700), size: 18),
+              const SizedBox(width: 8),
+              Text(
+                _l.insuranceTitle,
+                style: const TextStyle(
+                  color: Color(0xFFFFD700),
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '\$$amount  •  Pays 2:1',
+            style: const TextStyle(color: Colors.white54, fontSize: 12),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _actionBtn(
+                    _l.declineBtn, Colors.redAccent, _declineInsurance),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 2,
+                child: _actionBtn(
+                  '${_l.takeInsuranceBtn}  \$$amount',
+                  const Color(0xFFFFD700),
+                  _game.canAffordInsurance ? _takeInsurance : null,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Player action buttons (Hit / Stand / Double / Split) ──────────────────
   Widget _playerActionButtons() {
     final slot = _game.currentSlot;
-    final canDouble =
-        slot != null && slot.cards.length == 2 && _game.playerChips >= slot.bet;
+    final isPlayingSplit = slot?.isPlayingSplit ?? false;
+    final handLabel = isPlayingSplit ? _l.splitHandLabel : _l.mainHandLabel;
+    final handValue =
+        isPlayingSplit ? slot?.splitHandValue : slot?.handValue;
+    final canDouble = slot != null &&
+        (isPlayingSplit
+            ? slot.splitCards.length == 2 && _game.playerChips >= slot.splitBet
+            : slot.cards.length == 2 && _game.playerChips >= slot.bet);
 
     return Container(
       color: const Color(0xFF0d2818),
@@ -615,7 +834,7 @@ class _BlackjackScreenState extends State<BlackjackScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Slot ${_game.currentSlotIndex + 1}  •  ${slot?.handValue ?? ""}',
+            'Slot ${_game.currentSlotIndex + 1}  •  $handLabel  •  ${handValue ?? ""}',
             style: const TextStyle(color: Colors.white54, fontSize: 12),
           ),
           const SizedBox(height: 8),
@@ -623,13 +842,23 @@ class _BlackjackScreenState extends State<BlackjackScreen>
             children: [
               Expanded(child: _actionBtn(_l.hit, Colors.amber, _hit)),
               const SizedBox(width: 8),
-              Expanded(child: _actionBtn(_l.stand, const Color(0xFF4ade80), _stand)),
+              Expanded(
+                  child: _actionBtn(
+                      _l.stand, const Color(0xFF4ade80), _stand)),
               const SizedBox(width: 8),
               Expanded(
                 child: _actionBtn(
                   _l.doubleDown,
                   canDouble ? const Color(0xFF818cf8) : Colors.grey,
                   canDouble ? _double : null,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _actionBtn(
+                  _l.split,
+                  _game.canSplit ? Colors.cyanAccent : Colors.grey,
+                  (_game.canSplit && !isPlayingSplit) ? _split : null,
                 ),
               ),
             ],
@@ -646,7 +875,9 @@ class _BlackjackScreenState extends State<BlackjackScreen>
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: onTap != null ? color.withValues(alpha: 0.2) : Colors.grey.withValues(alpha: 0.1),
+          color: onTap != null
+              ? color.withValues(alpha: 0.2)
+              : Colors.grey.withValues(alpha: 0.1),
           border: Border.all(
             color: onTap != null ? color : Colors.grey,
             width: 1.5,
@@ -717,14 +948,16 @@ class _BlackjackScreenState extends State<BlackjackScreen>
                                   spreadRadius: 2,
                                 ),
                                 BoxShadow(
-                                  color: _chipColors[i].withValues(alpha: 0.6),
+                                  color:
+                                      _chipColors[i].withValues(alpha: 0.6),
                                   blurRadius: 6,
                                 ),
                               ]
                             : canAfford
                                 ? [
                                     BoxShadow(
-                                      color: _chipColors[i].withValues(alpha: 0.4),
+                                      color: _chipColors[i]
+                                          .withValues(alpha: 0.4),
                                       blurRadius: 4,
                                     ),
                                   ]
@@ -845,7 +1078,9 @@ class _BlackjackScreenState extends State<BlackjackScreen>
           border: Border.all(
             color: onTap != null ? color : Colors.white12,
           ),
-          color: onTap != null ? color.withValues(alpha: 0.15) : Colors.white.withValues(alpha: 0.03),
+          color: onTap != null
+              ? color.withValues(alpha: 0.15)
+              : Colors.white.withValues(alpha: 0.03),
         ),
         child: Center(
           child: Text(
